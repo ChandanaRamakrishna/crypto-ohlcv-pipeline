@@ -58,7 +58,7 @@ docker compose exec postgres psql -U market -d market -c \
 - **Analytics view:** `candle_metrics` uses `lag`, rolling `avg`, `stddev_samp`, a rolling
   volume-weighted price (approximated with close prices) and a cross-sectional `rank`.
 
-## Limitations (be upfront about these)
+## Limitations
 
 - Hourly candles for 4 symbols; this is not tick data and not high-throughput.
 - Airflow runs with the SequentialExecutor and a SQLite metadata DB, which is fine for a demo, not production.
