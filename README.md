@@ -20,11 +20,21 @@ docker compose up -d
 docker compose exec airflow airflow dags trigger crypto_ohlcv_hourly
 ```
 
+Successful Airflow DAG run:
+
+![Successful Airflow DAG](screenshots/airflow-dag-success.png)
+
 Check the results:
 
 ```bash
 docker compose exec postgres psql -U market -d market -f /queries.sql
 ```
+
+PostgreSQL query output:
+
+![PostgreSQL query output](screenshots/postgres-query-output-1.png)
+
+![PostgreSQL query output](screenshots/postgres-query-output-2.png)
 
 Run the unit tests (no Docker needed): `python -m unittest tests.test_ohlcv_utils -v`
 
@@ -55,6 +65,9 @@ docker compose exec postgres psql -U market -d market -c \
 - **Quality checks:** missing candles (gaps), invalid OHLC (nulls, non-positive prices, high < low),
   price jumps above 15% between consecutive closes, and stale data. Each result is logged to
   `dq_results`, and any failure fails the Airflow task.
+  Quality check failure example:
+  ![Airflow quality check failure](screenshots/airflow-quality-check-failure.png)
+
 - **Analytics view:** `candle_metrics` uses `lag`, rolling `avg`, `stddev_samp`, a rolling
   volume-weighted price (approximated with close prices) and a cross-sectional `rank`.
 
